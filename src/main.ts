@@ -137,6 +137,17 @@ app.get('/categorias', async (req, res) => {
         await bancoMysql.finalizarConexao();
     }
 });
+app.get("/categorias/:id", async (req, res) => {
+    try {
+        const result = await bancoMysql.consultar("SELECT * FROM categorias where id=?",[req.params.id]) as RowDataPacket
+        res.send(result[0])
+    } catch (e) {
+        console.log(e)
+        res.status(500).send("Server ERROR")
+    }finally {
+        await bancoMysql.finalizarConexao();
+    }
+})
 
 app.post("/categorias", async (req, res) => {
     try {
